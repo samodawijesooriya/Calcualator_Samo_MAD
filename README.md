@@ -26,6 +26,14 @@ This is a **simple calculator app** built using **Flutter**. It allows users to 
 
 ## Screenshots
 ![image](https://github.com/user-attachments/assets/0270b92b-c064-4cf8-ae05-7f94a7a2de49)
+![image](https://github.com/user-attachments/assets/dee705dc-0722-43b1-96ec-9132f4e671c5)
+![image](https://github.com/user-attachments/assets/adaa78f7-f18a-4766-87b7-a38e001556d9)
+
+---
+
+## Screen Record
+[Screen_recording_20241128_164119.webm](https://github.com/user-attachments/assets/42d60a90-34e4-4bb3-b259-0f87a1b40dac)
+
 
 
 ---
