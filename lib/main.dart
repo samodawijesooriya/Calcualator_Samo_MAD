@@ -8,6 +8,7 @@ void main() => runApp(MyApp());
 
 // sets up the main structure of the app
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
