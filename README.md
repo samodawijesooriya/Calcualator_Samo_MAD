@@ -25,9 +25,6 @@ This is a **simple calculator app** built using **Flutter**. It allows users to 
 ---
 
 ## Screenshots
-
-| Calculator UI | Buttons |
-|---|---|
 ![image](https://github.com/user-attachments/assets/0270b92b-c064-4cf8-ae05-7f94a7a2de49)
 
 
