@@ -1,7 +1,10 @@
+// Calculartor App
+// Samoda Wijesooriya
+// IM/2021/059
+
+// included libraries and packages
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-
 
 // where app starts
 void main() => runApp(MyApp());
@@ -24,8 +27,10 @@ class Calculator extends StatefulWidget {
   State<Calculator> createState() => _State();
 }
 
+// _state class
 class _State extends State<Calculator> {
 
+  // variables for the calculator
   String displayExpression = '';
   String currentNumber = '';
   String previousExpression = '';
@@ -33,18 +38,21 @@ class _State extends State<Calculator> {
   int pressCount = 0;
   bool lastPressedEquals = false;
 
+  // function for the calculator buttons
   Widget calbutton(String btntext, Color btncolor, Color textColor){
     return Container(
         height: 70,
         width: 70,
         child: ElevatedButton(
           onPressed: (){
+            // Check if the last button pressed was '=' and the current button is not '='
             if (lastPressedEquals && btntext != '=') {
               // Clear the display if the last button pressed was '=' and the current button is not '='
               currentNumber = '';
               displayExpression = currentNumber;
               lastPressedEquals = false;
             }
+            //  Check if the last button pressed was '=' and the current button is '='
             if (btntext == '0' && currentNumber == '0') {
               // Do nothing if 0 is already displayed
             }else {
@@ -66,6 +74,7 @@ class _State extends State<Calculator> {
     );
   }
 
+  // build function for the calculator
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,22 +193,6 @@ class _State extends State<Calculator> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // This is button 0
-                // ElevatedButton(
-                //   onPressed: (){
-                //     calculation('0');
-                //   },
-                //   child: Text('0',
-                //     style: TextStyle(
-                //         fontSize: 30,
-                //         color: Colors.white
-                //     ),),
-                //   style: ElevatedButton.styleFrom(
-                //     padding: EdgeInsets.fromLTRB(30, 15, 115, 15),
-                //     shape: StadiumBorder(),
-                //     backgroundColor: Color(0xFF383838),
-                //   ),
-                // ),
                 calbutton("+/-", Color(0xFF5f5c5c), Colors.white),
                 calbutton("0", Color(0xFF5f5c5c), Colors.white),
                 calbutton(".", Color(0xFF5f5c5c), Colors.white),
@@ -213,11 +206,14 @@ class _State extends State<Calculator> {
   }
   // for the calculator logic
 
-//Calculator logic
+//Calculator logic check
+
+  // variables for the calculator logic
   dynamic resultToShow ='';
   dynamic finalResult = '';
   dynamic result = '';
-  
+
+  // main calculation function
   void calculation(String btnText) {
     if (btnText == 'AC') {
       resultToShow = '';
@@ -227,7 +223,8 @@ class _State extends State<Calculator> {
       currentNumber = '';
       previousExpression = '';
       i = 0;
-    } else if (btnText == '⌫') {
+
+    } else if (btnText == '⌫') { // backspace
       if (currentNumber.isNotEmpty) {
         currentNumber = currentNumber.substring(0, currentNumber.length - 1);
         if (currentNumber.isEmpty) {
@@ -235,12 +232,12 @@ class _State extends State<Calculator> {
         }
         finalResult = currentNumber;
       }
-    } else if (btnText == '=') {
+    } else if (btnText == '=') {  // equals
       displayExpression = '$displayExpression $currentNumber';
       finalResult = doesContainDecimal(evaluateExpression(displayExpression));
       currentNumber = '';
       lastPressedEquals = true;
-    }else if (btnText == '%') {
+    }else if (btnText == '%') { // percentage
       if (currentNumber.isNotEmpty) {
         if(i >= 1){
           finalResult = "Invalid";
@@ -254,7 +251,7 @@ class _State extends State<Calculator> {
           currentNumber = '';
         }
       }
-    }else if(btnText == '+/-'){
+    }else if(btnText == '+/-'){ // positive or negative
       if (currentNumber.isNotEmpty) {
         double number = double.parse(currentNumber);
         number = (-number);
@@ -262,19 +259,19 @@ class _State extends State<Calculator> {
         finalResult = currentNumber;
         currentNumber = '';
       }
-    }else if (btnText == '.') {
+    }else if (btnText == '.') { // decimal point
       if (!currentNumber.contains('.')) {
-        if ( currentNumber == ''){
+        if ( currentNumber == ''){  // check if the number is empty
           currentNumber = '0.';
         }else {
           currentNumber += '.';
         }
-      }else if (currentNumber.contains('.') && !(currentNumber.endsWith('.'))){
+      }else if (currentNumber.contains('.') && !(currentNumber.endsWith('.'))){ // check if the number already contains a decimal point
           currentNumber += '.';
       }
       result = currentNumber;
       finalResult = result;
-    }else if (btnText == '\u221A') {
+    }else if (btnText == '\u221A') {  // square root
       // Handle square root functionality
       if (currentNumber.isNotEmpty) {
         double number = double.parse(currentNumber);
@@ -290,14 +287,14 @@ class _State extends State<Calculator> {
         }
       }
     }else {
-      if (currentNumber.isEmpty && ['+', '-', 'x', '/', '%'].contains(btnText.trim().split(' ').last) && resultToShow.isEmpty) {
+      if (currentNumber.isEmpty && ['+', '-', 'x', '/', '%'].contains(btnText.trim().split(' ').last) && resultToShow.isEmpty) {  // check if the number is empty
         // do nothing
       }
-      else if (btnText == '+' || btnText == '-' || btnText == 'x' || btnText == '/' || btnText == '%') {
+      else if (btnText == '+' || btnText == '-' || btnText == 'x' || btnText == '/' || btnText == '%') {  // check if the button is an operator
         if (currentNumber.isEmpty && ['+', '-', 'x', '/', '%'].contains(btnText.trim().split(' ').last)){
           // do nothing
         }
-        if (currentNumber.isEmpty || currentNumber == 'Error') {
+        if (currentNumber.isEmpty || currentNumber == 'Error') {  // check if the number is empty or error
           currentNumber = resultToShow + ' $btnText ';
         } else if (!['+', '-', 'x', '/', '%'].contains(currentNumber.trim().split(' ').last)) {
           currentNumber += ' $btnText ';
@@ -305,7 +302,7 @@ class _State extends State<Calculator> {
           // nothing
         }
       } else {
-        if (currentNumber == 'Error') {
+        if (currentNumber == 'Error') { // check if the number is error
           currentNumber = btnText;
         } else {
           currentNumber += btnText;
@@ -313,48 +310,51 @@ class _State extends State<Calculator> {
       }
       finalResult = currentNumber;
     }
-    setState(() {
+    setState(() { // update the state
       resultToShow = finalResult;
     });
   }
 
+  // evaluate the expression
   String evaluateExpression(String expression) {
+
+    // Split the expression into tokens
     List<String> tokens = expression.split(' ');
     List<double> values = [];
     List<String> ops = [];
 
-    for (String token in tokens) {
+    for (String token in tokens) {  // loop through the tokens
       if (token.isEmpty) continue;
 
       if (isOperator(token)) {
-        while (ops.isNotEmpty && hasPrecedence(token, ops.last)) {
+        while (ops.isNotEmpty && hasPrecedence(token, ops.last)) {  // check if the operator has precedence
           values.add(applyOp(ops.removeLast(), values.removeLast(), values.removeLast()));
         }
         ops.add(token);
       } else {
-        values.add(double.parse(token));
+        values.add(double.parse(token));  // parse the token to double
       }
     }
 
-    while (ops.isNotEmpty) {
+    while (ops.isNotEmpty) {  // loop through the operators
       values.add(applyOp(ops.removeLast(), values.removeLast(), values.removeLast()));
     }
 
-    if (values.last.isNaN) {
+    if (values.last.isNaN) {  // check if the value is NaN
       return "Can't divide by 0";
     }
-    else if (values.last.isInfinite) {
+    else if (values.last.isInfinite) {  // check if the value is infinite
       return "Error";
     }
 
-    return values.last.toString();
+    return values.last.toString();  // return the value
   }
 
-  bool isOperator(String token) {
+  bool isOperator(String token) { // check if the token is an operator
     return token == '+' || token == '-' || token == 'x' || token == '/' || token == '%';
   }
 
-  bool hasPrecedence(String op1, String op2) {
+  bool hasPrecedence(String op1, String op2) {  // check if the operator has precedence
     if ((op1 == 'x' || op1 == '/' || op1 == '%') && (op2 == '+' || op2 == '-')) {
       return false;
     } else {
@@ -362,7 +362,7 @@ class _State extends State<Calculator> {
     }
   }
 
-  double applyOp(String op, double b, double a) {
+  double applyOp(String op, double b, double a) { // apply the operator
     switch (op) {
       case '+':
         return a + b;
@@ -373,18 +373,28 @@ class _State extends State<Calculator> {
       case '/':
         return a / b;
       case '%':
-        return (a * (b / 100));
+        return (a * (b / 100)); // percentage calculation
       default:
         return 0;
     }
   }
+
+  // check if the result contains a decimal
   String doesContainDecimal(dynamic result) {
+
+    // Convert the result to a string
     String resultStr = result.toString();
+
+    // Check if the result contains a decimal
     if (resultStr.contains('.')) {
+
       List<String> splitDecimal = resultStr.split('.');
       String decimalPart = splitDecimal[1];
+
       if (decimalPart.length > 1) {
         for (int i = 1; i <= decimalPart.length / 2; i++) {
+
+          // Check if the decimal part is repeating
           String pattern = decimalPart.substring(0, i);
           String repeatedPattern = pattern * (decimalPart.length ~/ i);
           if (decimalPart.startsWith(repeatedPattern)) {
@@ -398,5 +408,8 @@ class _State extends State<Calculator> {
     }
     return resultStr;
   }
-
 }
+
+// end of the code
+// Samoda Wijesooriya
+// IM/2021/059
