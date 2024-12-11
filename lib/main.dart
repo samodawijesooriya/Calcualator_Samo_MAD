@@ -233,10 +233,10 @@ class _State extends State<Calculator> {
         finalResult = currentNumber;
       }
     } else if (btnText == '=') {  // equals
-      displayExpression = '$displayExpression $currentNumber';
+      displayExpression = finalResult;
       finalResult = doesContainDecimal(evaluateExpression(displayExpression));
       currentNumber = '';
-      lastPressedEquals = true;
+      lastPressedEquals = true; // set lastPressedEquals to true
     }else if (btnText == '%') { // percentage
       if (currentNumber.isNotEmpty) {
         if(i >= 1){
@@ -260,14 +260,14 @@ class _State extends State<Calculator> {
         currentNumber = '';
       }
     }else if (btnText == '.') { // decimal point
-      if (!currentNumber.contains('.')) {
-        if ( currentNumber == ''){  // check if the number is empty
+      List<String> parts = currentNumber.split(RegExp(r'[\+\-\x\/\%]')); // split by operators
+      String lastPart = parts.isNotEmpty ? parts.last : '';
+      if (!lastPart.contains('.')) {
+        if (currentNumber.isEmpty) {  // check if the number is empty
           currentNumber = '0.';
-        }else {
+        } else {
           currentNumber += '.';
         }
-      }else if (currentNumber.contains('.') && !(currentNumber.endsWith('.'))){ // check if the number already contains a decimal point
-          currentNumber += '.';
       }
       result = currentNumber;
       finalResult = result;
@@ -276,11 +276,10 @@ class _State extends State<Calculator> {
       if (currentNumber.isNotEmpty) {
         double number = double.parse(currentNumber);
         if (number < 0) {
-          finalResult = "Invalid";  // Handle negative numbers in square root
+          finalResult = "Invalid"; // Handle negative numbers in square root
         } else {
           displayExpression = '√$currentNumber';
-          double sqrtResult = (number >= 0) ? sqrt(number) : 0;
-          // currentNumber = sqrtResult.toStringAsFixed(5);
+          double sqrtResult = sqrt(number);
           currentNumber = doesContainDecimal(sqrtResult);
           finalResult = currentNumber;
           currentNumber = '';
